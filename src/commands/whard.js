@@ -40,16 +40,12 @@ module.exports = {
     );
 
     const hint = longestWord[Math.floor(Math.random() * longestWord.length)];
-
+    
     const question = new EmbedBuilder()
       .setColor("#D2042D")
       .setTitle("Guess the missing word (HARDCORE)")
       .setDescription(newMessage)
       .addFields({name: "Hint:", value: `The word has a letter "**${hint.toUpperCase()}**" on it.`});
-
-    message.channel.send({ embeds: [question] });
-
-    console.log(longestWord);
 
     const filter = (m) => {
       return m.author.id === message.author.id;
@@ -84,6 +80,10 @@ module.exports = {
       message.channel.send({ embeds: [timeoutEmbed] });
       collector.stop("Time's out");
     }, 25000);
+
+    console.log(longestWord);
+
+    return {embeds: [question]};
 
   },
 };
