@@ -29,6 +29,6 @@ module.exports = {
         .setTitle("Kana says....")
         .setDescription(`${res["reading"]}`)
 
-        message.reply({ embeds: [resEmbed] });
+        return { embeds: [resEmbed] };
     }
 }
