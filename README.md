@@ -1,2 +1,25 @@
-# Kana
-A simple project of mine that is a discord bot which sends out a minigame for you to play
+<img alt="Arona" src="https://imgur.com/a/hDfS55l"/>
+
+<center><b>Complete and configurable currency and games multipurpose Discord bot, inspired by [Mantaro](https://github.com/Mantaro)</b></center>
+
+## Building the Bot
+
+### Prerequisite:
+
+You will need the following to utilize all of Mantaro's features when building your own instance (items marked with a star are optional):
+* MongoDB, at least version 6
+* Node.js, at least 2.0+
+* Giphy Web API for action commands
+
+**It's still in progress, so newer frameworks and api might be used in the future.**
+
+## License
+
+>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
+>as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. 
+>                                                   
+>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+>without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+>                                                   
+>See the GNU General Public License for more details. 
+>You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/
