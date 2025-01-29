@@ -8,7 +8,7 @@
 
 ### Prerequisite:
 
-You will need the following to utilize all of Mantaro's features when building your own instance (items marked with a star are optional):
+You will need the following to utilize all of Arona's features when building your own instance:
 * MongoDB, at least version 6
 * Node.js, at least 2.0+
 * Giphy Web API for action commands
