@@ -2,13 +2,14 @@ const fetch = require("node-fetch");
 const { EmbedBuilder } = require("discord.js");
 const ds = require("discord.js");
 const { CommandType, CooldownTypes } = require("wokcommands");
+const profileModel = require("../models/profileSchema");
 
 module.exports = {
   description: "Guess the missing word",
   type: CommandType.BOTH,
 
   cooldowns : {
-    errorMessage: "You're being rough! Please wait for {TIME}",
+    errorMessage: "You're being rough! Please wait for **{TIME}**",
     type: CooldownTypes.perGuild,
     duration: "10 s"
   },
@@ -18,30 +19,43 @@ module.exports = {
       method: "GET",
     }).then((response) => response.json());
 
+    let profileData;
+    try {
+      profileData = await profileModel.findOne({ userId: message.interaction.user.id});
+      if (!profileData) {
+        profileData = await profileModel.create({
+          userId: message.interaction.user.id,
+          serverId: message.interaction.guild.id,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+
     const array = quote[0]["q"].split(" ");
 
     const randomWord = array[Math.floor(Math.random() * array.length)].replace(
       /[.;,']/g,
       ""
     );
-
     console.log(array);
     console.log(randomWord);
 
     const newMessage = quote[0]["q"].replace(
       randomWord,
-      "_".repeat(randomWord.length)
+      "-".repeat(randomWord.length)
     );
 
     const question = new EmbedBuilder()
-      .setColor("#D22B2B")
+      .setColor("#03f4fc")
       .setTitle("Guess the missing word")
       .setDescription(newMessage)
 
     if (randomWord.length >= 5) {
       question.addFields(
         { name: "Hint:", 
-        value: `First letter is "${randomWord[0]}" and it's ${randomWord.length} letters long`}
+        value: `First letter is "**${randomWord[0].toUpperCase()}**" and it's ${randomWord.length} letters long`}
       );
     } else if (randomWord.length > 1 && randomWord.length < 5) {
         question.addFields({
@@ -61,17 +75,18 @@ module.exports = {
 
     const collector = new ds.MessageCollector(message.channel, filter, {
       max: 1,
-      time: 5000,
+      time: 10000,
     });
 
-    const correctEmbed = new EmbedBuilder()
-      .setColor("#D2042D")
-      .setTitle("That's right!")
-      .setDescription("You deserve a lick~")
-
+    let points;
+    if (randomWord.length > 4) {
+      points = 5;
+    } else {
+      points = randomWord.length;
+    }
 
     const timeoutEmbed = new EmbedBuilder()
-        .setColor("#D2042D")
+        .setColor("#03f4fc")
         .setTitle(`Time's out! The word is "**${randomWord.toUpperCase()}**"`)
         .setDescription(quote[0]["q"])      
 
@@ -80,12 +95,32 @@ module.exports = {
       collector.stop("Time's out");
     }, 25000);
 
-    collector.on("collect", (m) => {
-        if (m.content.toLowerCase() === randomWord.toLowerCase()) {
+    collector.on("collect", async (m) => {
+      const user = m.author;
+      const correctEmbed = new EmbedBuilder()
+      .setColor("#03f4fc")
+      .setTitle("That's right!")
+      .setDescription(`${ user } you've gained **${points}** points!`)
+        if (m.content.toLowerCase() === randomWord.toLowerCase()) {    
           m.reply({ embeds: [correctEmbed] });
           collector.stop();    
-          clearTimeout(timeout);     
+          clearTimeout(timeout);
+          
+          const id = m.author.id;
+          try {
+            await profileModel.findOneAndUpdate(
+              { userId: id }, 
+              {
+              $inc: {
+                userPoints: points,
+              },
+            });            
+          } catch (err) {
+            console.log(err);
+          }    
+          
           return;
+
         }
       });
       
