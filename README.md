@@ -1,6 +1,7 @@
 <img alt="Arona" src="https://i.imgur.com/7JZhIoL.png"/>
 
 <center><b>Complete and configurable currency and games multipurpose Discord bot</b></center>
+
 **Inspired by [Mantaro](https://github.com/Mantaro)**
 
 ## Building the Bot
