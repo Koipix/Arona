@@ -1,0 +1,65 @@
+const fetch = require("node-fetch");
+const ds = require("discord.js");
+const { CommandType, CooldownTypes } = require("wokcommands");
+require("dotenv").config();
+
+const url = "http://localhost:5001/";
+
+module.exports = {
+    description: "Action command",
+    type: CommandType.BOTH,
+
+    cooldowns: {
+        errorMessage: "You're being rough! Please wait for **{TIME}**",
+        type: CooldownTypes.perGuild,
+        duration: "5 s"
+    },
+
+    callback: async (m) => {  
+        const userMessage = m.message.content;
+        console.log(userMessage);
+        const requestBody = {
+            max_context_length: 2048,
+            max_length: 100,
+            prompt: `Arona is a cheerful, supportive, and knowledgeable Assistant AI with bright blue eyes, short neck-length hair, and a glowing blue halo that turns green when excited. 
+                    She resides in the Blue Archive universe and addresses her user as "Sensei." Arona is enthusiastic about helping and learning, but she occasionally becomes overly optimistic. 
+                    She uses soft-spoken, poetic, and persuasive language in her responses. 
+
+                    User: ${userMessage}  
+                    Arona:`,
+            quiet: false,
+            rep_pen: 1.1,
+            rep_pen_range: 256,
+            rep_pen_slope: 1,
+            temperature: 0.5,
+            tfs: 1,
+            top_a: 0,
+            top_k: 100,
+            top_p: 0.9,
+            typical: 1,
+        }
+
+        async function generateText() {
+            try {
+                const res = await fetch(`${url}/api/v1/generate`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP Error or skill issue.. Status: ${res.status}`);
+                }
+
+                const data = await res.json();
+                console.log("Generated Text: ", data.results[0].text);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        return generateText();
+    },
+};
