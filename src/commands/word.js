@@ -13,7 +13,7 @@ module.exports = {
     type: CooldownTypes.perGuild,
     duration: "10 s"
   },
-  
+
   callback: async (message) => {
     const quote = await fetch("https://zenquotes.io/api/random", {
       method: "GET",
@@ -54,17 +54,17 @@ module.exports = {
 
     if (randomWord.length >= 5) {
       question.addFields(
-        { name: "Hint:", 
+        { name: "Hint:",
         value: `First letter is "**${randomWord[0].toUpperCase()}**" and it's ${randomWord.length} letters long`}
       );
     } else if (randomWord.length > 1 && randomWord.length < 5) {
         question.addFields({
-        name: "Hint:", 
+        name: "Hint:",
         value: `The word has ${randomWord.length} letters`
     });
     } else {
         question.addFields({
-            name: "Hint:", 
+            name: "Hint:",
             value: `You know it :3`
         });
     }
@@ -88,7 +88,7 @@ module.exports = {
     const timeoutEmbed = new EmbedBuilder()
         .setColor("#03f4fc")
         .setTitle(`Time's out! The word is "**${randomWord.toUpperCase()}**"`)
-        .setDescription(quote[0]["q"])      
+        .setDescription(quote[0]["q"])
 
     const timeout = setTimeout(() => {
       message.channel.send({ embeds: [timeoutEmbed] });
@@ -101,29 +101,29 @@ module.exports = {
       .setColor("#03f4fc")
       .setTitle("That's right!")
       .setDescription(`${ user } you've gained **${points}** points!`)
-        if (m.content.toLowerCase() === randomWord.toLowerCase()) {    
+        if (m.content.toLowerCase() === randomWord.toLowerCase()) {
           m.reply({ embeds: [correctEmbed] });
-          collector.stop();    
+          collector.stop();
           clearTimeout(timeout);
-          
+
           const id = m.author.id;
           try {
             await profileModel.findOneAndUpdate(
-              { userId: id }, 
+              { userId: id },
               {
               $inc: {
                 userPoints: points,
               },
-            });            
+            });
           } catch (err) {
             console.log(err);
-          }    
-          
+          }
+
           return;
 
         }
       });
-      
+
       return {embeds: [question]};
 
   },
