@@ -13,6 +13,9 @@ You will need the following to utilize all of Arona's features when building you
 * Node.js, at least 2.0+
 * Giphy Web API for action commands
 
+<center><b>Now has AI integrated with LLMA 3 Model (required to run the model locally first)</b></center>
+<br><br>
+
 **It's still in progress, so newer frameworks and api might be used in the future.**
 
 ## License
