@@ -1,15 +1,28 @@
 <img alt="Arona" src="https://i.imgur.com/7JZhIoL.png"/>
 
 <center><b>Complete and configurable currency and games multipurpose Discord bot</b></center>
+<hr>
 
-**Inspired by [Mantaro](https://github.com/Mantaro)**
+**Quick Devlog**:
+
+Originally, this was truly inspired by [Mantaro](https://github.com/Mantaro) as a fellow user of such bot. 
+
+Unfortunately, Mantaro ending it's service after all this years. 
+
+So I've decided to make my own and made some fun features like minigames and cute action commands to show affection toward other users through Discord!
+
+After some time, I've been watching [Neuro](https://en.wikipedia.org/wiki/Neuro-sama) and an idea came into my mind by integrating an LLM to Arona so you can communicate with her through the platform which was made possible after some research and it works like a charm! 
+
+This piqued my interest into diving LLMs to utilize them to the fullest and it took me some time training her personality, fixing prompts to match the respective model, it was such a daunting task but I enjoyed the process to the very end.
+
+Currently, I've have no plans as of the moment but will work on this soon when I have time! This is just a personal project of mine for my frends to have one with.
 
 ## Building the Bot
 
 ### Prerequisite:
 
 You will need the following to utilize all of Arona's features when building your own instance:
-* MongoDB, at least version 6
+* ~~MongoDB, at least version 6~~ (dropped)
 * Node.js, at least 2.0+
 * Giphy Web API for action commands
 
