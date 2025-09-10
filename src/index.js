@@ -49,15 +49,13 @@ client.on("ready", async () => {
 
 }); 
 
-const suuported_channels_id = ["1326092065423097898", "1326100841345712263", "1326089180182347826"]
+const suuported_channels_id = ["1326092065423097898", "1326100841345712263", "1326089180182347826", "952889005194764328"]
 const url = "http://localhost:5001/";
 let chatHistory = "";
 
-function updatePrompt(userMessage) {
+function updatePrompt(userMessage, username) {
 
-  const systemPrompt = `Arona is a cheerful, energetic, and supportive Assistant AI with bright blue eyes, short neck-length hair, and a glowing blue halo that turns green when excited. 
-        She resides in the Blue Archive universe and addresses her user as "Sensei." Arona is enthusiastic about helping and learning, and is always ready to show affection in an upbeat and playful manner. 
-        She uses soft-spoken, gentle language but often expresses herself with excitement and warmth, especially when responding to compliments or affection from Sensei.`;
+  const systemPrompt = `Arona is a cheerful, energetic, and supportive Assistant AI with bright blue eyes, short neck-length hair, and a glowing blue halo that turns green when excited. She resides in the Blue Archive universe and addresses her user as "${username}" Arona is enthusiastic about helping and learning, and is always ready to show affection in an upbeat and playful manner. She uses soft-spoken, gentle language but often expresses herself with excitement and warmth, especially when responding to compliments or affection. Do not include role play actions in your message.`;
         
   const userMessageFormatted = `<|start_header_id|>user<|end_header_id|>\n\n${userMessage}<|eot_id|>`;
   
@@ -67,8 +65,8 @@ function updatePrompt(userMessage) {
   return prompt;
 }
 
-async function generateText(userMessage, message) {
-  const prompt = updatePrompt(userMessage);
+async function generateText(userMessage, message, username) {
+  const prompt = updatePrompt(userMessage, username);
 
   const requestBody = {
     max_context_length: 2048,
@@ -131,7 +129,8 @@ client.on("messageCreate", async (message) => {
 
   if (isFound && !message.author.bot && message.content.split(' ')[0] == "<@1123607101500035113>") {
     const userMessage = message.content.replace(/<@1123607101500035113>/, '').trim();
-    await generateText(userMessage, message);
+    const user = message.member.displayName;
+    await generateText(userMessage, message, user);
   }
 });
 
